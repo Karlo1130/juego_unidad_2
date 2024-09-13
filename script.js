@@ -12,8 +12,8 @@ class Player {
         this.sprite = new Image();
         this.sprite.src = 'assets/player/punpun.png';
 
-        this.height = 70;
-        this.width = 50;
+        this.height = this.sprite.height;
+        this.width = this.sprite.width;
 
         this.ySpeed = 7;
         this.xSpeed = 5;
@@ -26,10 +26,50 @@ class Player {
     drawPlayer(){
         ctx.drawImage(this.sprite, this.xPosition, this.yPosition, this.width, this.height)
     }
+
+    //collision detection
+    isColliding(enemy){
+        if(this.xPosition < enemy.xPosition + enemy.width 
+            && this.xPosition + this.width > enemy.xPosition 
+            && this.yPosition < enemy.yPosition + enemy.height 
+            && this.yPosition + this.height > enemy.yPosition){  
+            return true;
+        }
+         
+        return false;
+    }
+}
+
+//car object
+class Car {
+    constructor(){
+        this.direction = '';
+
+        this.xPosition = 0;
+        this.yPosition = 0;
+
+        this.sprite = new Image();
+        this.sprite.src = 'assets/enemys/green_car.png';
+
+        this.height = this.sprite.height;
+        this.width = this.sprite.width;
+
+        this.xSpeed = 2.5;
+
+        this.sprite.onload = () => {
+            this.drawCar();
+        };
+    }
+
+    drawCar(){
+        ctx.drawImage(this.sprite, this.xPosition, this.yPosition, this.width, this.height)
+    }
 }
 
 //player creation
 var punpun = new Player();
+
+var car = new Car();
 
 //is in pause variable
 var isPaused = false;
@@ -78,6 +118,8 @@ function draw(){
 
     punpun.drawPlayer();
 
+    car.drawCar();
+
     update();
     requestAnimationFrame(draw);
 }
@@ -112,6 +154,10 @@ function update(){
                 break;
         }
     }
+
+    if(punpun.isColliding(car))
+        console.log('ta chocando');
+        
 }
 
 requestAnimationFrame(draw);
