@@ -1,5 +1,22 @@
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
+const canvas = document.getElementById('canvas');
+const canvasHeight = canvas.height;
+const canvasWidth = canvas.width;
+const ctx = canvas.getContext('2d');
+
+//coords where cars can spawn
+const roadSpawnCoords = [];
+for (let i = 70; i <= 700; i+=70) {
+    roadSpawnCoords.push(i)
+}
+
+//background image
+const bgImage = new Image();
+bgImage.src = 'assets/bg/mono.jfif'
+
+//seconds variable
+var seconds = 0;
+//is in pause variable
+var isPaused = false;
 
 //player object
 class Player {
@@ -42,11 +59,11 @@ class Player {
 
 //car object
 class Car {
-    constructor(){
-        this.direction = '';
+    constructor(xPosition, yPosition, direction){
+        this.direction = direction;
 
-        this.xPosition = 0;
-        this.yPosition = 0;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
 
         this.sprite = new Image();
         this.sprite.src = 'assets/enemys/green_car.png';
@@ -62,17 +79,47 @@ class Car {
     }
 
     drawCar(){
-        ctx.drawImage(this.sprite, this.xPosition, this.yPosition, this.width, this.height)
+        if(this.direction == 'right'){
+            ctx.drawImage(this.sprite, this.xPosition, this.yPosition, this.width, this.height);
+        } else {
+            ctx.translate(this.xPosition + this.width, this.yPosition);
+
+            ctx.scale(-1, 1);
+
+            ctx.drawImage(this.sprite, 0, 0);
+
+            ctx.setTransform(1,0,0,1,0,0);
+        }
+    }
+
+    moveCar(){
+        if(this.direction == 'right'){
+            this.xPosition += this.xSpeed;
+        } else {
+            this.xPosition -= this.xSpeed; 
+        }
     }
 }
 
 //player creation
 var punpun = new Player();
 
-var car = new Car();
+var cars = [];
+var isFlipped = false;
+roadSpawnCoords.forEach(roadSpawnCoord => {
+    if(!isFlipped){
+        cars.push(new Car(-100, roadSpawnCoord, 'right'));
+        isFlipped = !isFlipped;
+    } else {
+        cars.push(new Car(canvasWidth, roadSpawnCoord, 'left'));
+        isFlipped = !isFlipped;
+    }
+});
 
-//is in pause variable
-var isPaused = false;
+//seconds counter
+window.setInterval(function(){
+    seconds++;
+}, 1000);
 
 //keydown listener
 document.addEventListener("keydown", function(e){
@@ -114,11 +161,17 @@ function draw(){
 
     //bg redraw
     ctx.fillStyle = 'burlywood';
-    ctx.fillRect(0, 0, 700, 870);
+    //ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight);
 
     punpun.drawPlayer();
 
-    car.drawCar();
+    cars.forEach(car => {
+        car.drawCar();
+    });
+
+    ctx.font = '70px Arial'
+    ctx.fillText(seconds, 550, 70)
 
     update();
     requestAnimationFrame(draw);
@@ -154,10 +207,19 @@ function update(){
                 break;
         }
     }
+    
+    cars.forEach(car => {
+        car.moveCar();
 
-    if(punpun.isColliding(car))
-        console.log('ta chocando');
-        
+        if(punpun.isColliding(car))
+            console.log('ta chocando');
+    });
+}
+
+//get a coord where a car can spawn
+function getRandomRoadCoord(){
+    let randomNumber = Math.floor(Math.random() * 10);
+    return roadSpawnCoords[randomNumber];
 }
 
 requestAnimationFrame(draw);
