@@ -241,7 +241,8 @@ function update(){
             
         }
 
-        newCarWhenSpace(newCar);
+        //newCarWhenSpace(newCar);
+        new newCarWhenRandomTime(newCar);
 
         cars.forEach(car => {
             car.moveCar();
@@ -258,7 +259,7 @@ function update(){
             }
 
             //newCarWhenDestroy(car);
-            newCarWhenSpace(car);
+            //newCarWhenSpace(car);
         });
     }
 
@@ -269,7 +270,7 @@ function update(){
     
 }
 
-//create a new car in the same when a car has beign destroy
+//create a new car in the same road when a car has beign destroy
 function newCarWhenDestroy(car){
     if(car.isDestroyed){
         if(car.direction == 'right'){
@@ -281,6 +282,7 @@ function newCarWhenDestroy(car){
     }
 }
 
+//push a new car in the same road when a car is in the middle
 function newCarWhenSpace(car) {
     if(car.xPosition == canvasWidth/2){
         if(car.direction == 'right'){
@@ -293,8 +295,39 @@ function newCarWhenSpace(car) {
 }
 
 
+//push a new car in the same road every 3 sec
+function newCarWhenTime(car) {
+    if(seconds % 3 == 0 && UPS == 30 && seconds >= 3){
+        if(car.direction == 'right'){
+            cars.push(new Car(-100, car.yPosition, 'right'));
+        } else {
+            cars.push(new Car(canvasWidth, car.yPosition, 'left'));
+        }
+        console.log('new car created');
+    }
+}
+
+//push a new car in the same road in between 2 and 5 sec
+function newCarWhenRandomTime(car) {
+
+    let randomTime = getRandomInt(2, 6)
+
+    console.log(randomTime);
+    
+
+    if(seconds % randomTime == 0 && UPS == 30 && seconds >= randomTime){
+        if(car.direction == 'right'){
+            cars.push(new Car(-100, car.yPosition, 'right'));
+        } else {
+            cars.push(new Car(canvasWidth, car.yPosition, 'left'));
+        }
+        console.log('new car created');
+    }
+}
+
+
 //get a coord where a car can spawn
-function getRandomTimer(min, max){
+function getRandomInt(min, max){
     return Math.floor(Math.random() * (max - min) + min);
 }
 
