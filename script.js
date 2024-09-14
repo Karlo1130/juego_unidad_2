@@ -73,6 +73,8 @@ class Car {
 
         this.xSpeed = 2.5;
 
+        this.isDestroyed = false;
+
         this.sprite.onload = () => {
             this.drawCar();
         };
@@ -99,7 +101,16 @@ class Car {
             this.xPosition -= this.xSpeed; 
         }
     }
+
+    destroyCar(){
+        this.isDestroyed = true;
+    }
 }
+
+//seconds counter
+window.setInterval(function(){
+    seconds++;
+}, 1000);
 
 //player creation
 var punpun = new Player();
@@ -115,11 +126,6 @@ roadSpawnCoords.forEach(roadSpawnCoord => {
         isFlipped = !isFlipped;
     }
 });
-
-//seconds counter
-window.setInterval(function(){
-    seconds++;
-}, 1000);
 
 //keydown listener
 document.addEventListener("keydown", function(e){
@@ -211,8 +217,16 @@ function update(){
     cars.forEach(car => {
         car.moveCar();
 
-        if(punpun.isColliding(car))
+        if(punpun.isColliding(car)){
             console.log('ta chocando');
+        }
+        
+        if(car.xPosition <= -101 || car.xPosition >= canvasWidth + 1){
+            car.destroyCar();
+            let carIndex = cars.findIndex(car => car.isDestroyed == true);
+            cars.splice(carIndex, 1)
+            console.log('car #' + carIndex + 'has being destroy');
+        }
     });
 }
 
