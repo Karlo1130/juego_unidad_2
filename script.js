@@ -15,23 +15,34 @@ bgImage.src = 'assets/bg/mono.jfif'
 
 //seconds variable
 var seconds = 0;
+
 //is in pause variable
 var isPaused = false;
+
+//updates per seconds
+var UPS = 0;
+
+var newCarFlag = false;
+
+//is every level passed? you won!!
+var isLevelOnePassed = false;
+var isLevelTwoPassed = false;
+var isLevelThreePassed = false;
 
 //player object
 class Player {
     constructor(){
         this.direction = '';
 
-        this.xPosition = 0;
-        this.yPosition = 0;
-
         this.sprite = new Image();
         this.sprite.src = 'assets/player/punpun.png';
-
+        
         this.height = this.sprite.height;
         this.width = this.sprite.width;
-
+        
+        this.xPosition = (canvasWidth / 2) - (this.width / 2);
+        this.yPosition = canvasHeight-this.height;
+        
         this.ySpeed = 7;
         this.xSpeed = 5;
 
@@ -108,24 +119,26 @@ class Car {
 }
 
 //seconds counter
-window.setInterval(function(){
-    seconds++;
-}, 1000);
+// window.setInterval(function(){
+//     seconds++;
+// }, 1000);
 
 //player creation
 var punpun = new Player();
-
+ 
 var cars = [];
 var isFlipped = false;
-roadSpawnCoords.forEach(roadSpawnCoord => {
-    if(!isFlipped){
-        cars.push(new Car(-100, roadSpawnCoord, 'right'));
-        isFlipped = !isFlipped;
-    } else {
-        cars.push(new Car(canvasWidth, roadSpawnCoord, 'left'));
-        isFlipped = !isFlipped;
-    }
-});
+// roadSpawnCoords.forEach(roadSpawnCoord => {
+//     if(!isFlipped){
+//         cars.push(new Car(-100, roadSpawnCoord, 'right'));
+//         isFlipped = !isFlipped;
+//     } else {
+//         cars.push(new Car(canvasWidth, roadSpawnCoord, 'left'));
+//         isFlipped = !isFlipped;
+//     }
+// });
+
+var newCar = new Car(-100, 100, 'right')
 
 //keydown listener
 document.addEventListener("keydown", function(e){
@@ -176,6 +189,8 @@ function draw(){
         car.drawCar();
     });
 
+    newCar.drawCar();
+
     ctx.font = '70px Arial'
     ctx.fillText(seconds, 550, 70)
 
@@ -189,51 +204,98 @@ function update(){
     //is in pause
     if(!isPaused){
 
+        //seconds calculator
+        UPS++;
+        if(UPS == 60){
+            seconds++;
+            UPS = 0;
+        }
+
         //position update
         switch(punpun.direction){
             case "left":
                 punpun.xPosition -= punpun.xSpeed
-                // if(player.xPosition <= 0)
-                //     player.xPosition += 500
+                 if(punpun.xPosition < 0)
+                    punpun.xPosition += punpun.xSpeed;
                 break;
             case "up":
                 punpun.yPosition -= punpun.ySpeed
-                // if(player.yPosition <= 0)
-                //     player.yPosition += 500
+                 if(punpun.yPosition < 0)
+                    punpun.yPosition += punpun.ySpeed;
                 break;
-            case direction = "right":
+            case "right":
                 punpun.xPosition += punpun.xSpeed
-                // if(player.xPosition >= 500)
-                    // player.xPosition -= 500
+                if(punpun.xPosition > canvasWidth - punpun.width) 
+                    punpun.xPosition -= punpun.xSpeed;
                 break;
-            case direction = "down":
+            case "down":
                 punpun.yPosition += punpun.ySpeed
-                // if(player.yPosition >= 500)
-                    // player.yPosition -= 500
+                if(punpun.yPosition > canvasHeight - punpun.height)
+                    punpun.yPosition -= punpun.ySpeed;
                 break;
         }
+
+        newCar.moveCar();
+        if (punpun.isColliding(newCar)) {
+            console.log('ta chocando');
+            
+        }
+
+        newCarWhenSpace(newCar);
+
+        cars.forEach(car => {
+            car.moveCar();
+            
+            if(punpun.isColliding(car)){
+                console.log('ta chocando');
+            }
+            
+            if(car.xPosition <= -101 || car.xPosition >= canvasWidth + 1){
+                car.destroyCar();
+                let carIndex = cars.findIndex(car => car.isDestroyed == true);
+                cars.splice(carIndex, 1)
+                console.log('car #' + carIndex + ' has being destroy');
+            }
+
+            //newCarWhenDestroy(car);
+            newCarWhenSpace(car);
+        });
+    }
+
+    if (punpun.yPosition <= 70) {
+        isLevelOnePassed = true;
+        console.log('ganaste el primer nivel');
     }
     
-    cars.forEach(car => {
-        car.moveCar();
-
-        if(punpun.isColliding(car)){
-            console.log('ta chocando');
-        }
-        
-        if(car.xPosition <= -101 || car.xPosition >= canvasWidth + 1){
-            car.destroyCar();
-            let carIndex = cars.findIndex(car => car.isDestroyed == true);
-            cars.splice(carIndex, 1)
-            console.log('car #' + carIndex + 'has being destroy');
-        }
-    });
 }
 
+//create a new car in the same when a car has beign destroy
+function newCarWhenDestroy(car){
+    if(car.isDestroyed){
+        if(car.direction == 'right'){
+            cars.push(new Car(-100, car.yPosition, 'right'));
+        } else {
+            cars.push(new Car(canvasWidth, car.yPosition, 'left'));
+        }
+        console.log('new car created');
+    }
+}
+
+function newCarWhenSpace(car) {
+    if(car.xPosition == canvasWidth/2){
+        if(car.direction == 'right'){
+            cars.push(new Car(-100, car.yPosition, 'right'));
+        } else {
+            cars.push(new Car(canvasWidth, car.yPosition, 'left'));
+        }
+        console.log('new car created');
+    }
+}
+
+
 //get a coord where a car can spawn
-function getRandomRoadCoord(){
-    let randomNumber = Math.floor(Math.random() * 10);
-    return roadSpawnCoords[randomNumber];
+function getRandomTimer(min, max){
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 requestAnimationFrame(draw);
