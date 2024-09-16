@@ -21,6 +21,7 @@ var isLevelTwoPassed = false;
 var isLevelThreePassed = false;
 
 var punpun = new Player();
+var roads = [];
 
 //create a new enemy in the same road when a car has beign destroy
 function newEnemyWhenDestroy(road){

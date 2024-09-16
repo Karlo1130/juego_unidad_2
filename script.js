@@ -41,10 +41,22 @@ function draw(){
     ctx.fillStyle = 'burlywood';
     //ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight);
-
     
-    drawLevel1()
-
+    if(!isLevelOnePassed){
+        drawLevel1();
+    }
+    
+    if (isLevelOnePassed && !isLevelTwoPassed){
+        drawLevel2();
+    }
+    
+    if (isLevelTwoPassed && !isLevelThreePassed){
+        drawLevel3();
+    }
+    
+    if (isLevelThreePassed){
+        
+    }
 
     ctx.font = '70px Arial'
     ctx.fillText(seconds, 550, 70)
@@ -90,7 +102,18 @@ function update(){
                 break;
         }
 
-        updateLevel1();
+        if(!isLevelOnePassed){
+            updateLevel1();
+        }
+        
+        if (isLevelOnePassed && !isLevelTwoPassed){
+            updateLevel2();
+        }
+        
+        if (isLevelTwoPassed && !isLevelThreePassed){
+            updateLevel3();
+        }
+
     }
 
 }

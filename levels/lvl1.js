@@ -1,4 +1,3 @@
-var roads = [];
 
 roads.push(new Road(1, 100, 'right'));
 roads.push(new Road(2, 200, 'left'));
@@ -13,7 +12,6 @@ roads[3].spawnEnemy(roads[3].roadDirection)
 roads[4].spawnEnemy(roads[4].roadDirection)
 
 function drawLevel1() {
-    
     punpun.drawPlayer();
 
     roads.forEach(road => {
@@ -32,7 +30,7 @@ function updateLevel1(){
             enemy.moveEnemy();
 
             if(punpun.isColliding(enemy)){
-                console.log('ta chocando');
+                //console.log('ta chocando');
             }
 
             if((enemy.xPosition <= -101 && enemy.direction == 'left') 
@@ -66,7 +64,28 @@ function updateLevel1(){
 
     });
 
-    if (punpun.yPosition <= 70) {
+    if (punpun.yPosition <= 70) {        
+
+        punpun.xPosition = (canvasWidth / 2) - (punpun.width / 2);
+        punpun.yPosition = canvasHeight-punpun.height;
+        
+        roads = []
+
+        roads.push(new Road(1, 100, 'right'));
+        roads.push(new Road(2, 200, 'left'));
+        roads.push(new Road(3, 400, 'right'));
+        roads.push(new Road(4, 500, 'left'));
+        roads.push(new Road(5, 600, 'right'));
+        roads.push(new Road(6, 700, 'left'));
+
+        roads[0].spawnEnemy(roads[0].roadDirection)
+        roads[1].spawnEnemy(roads[1].roadDirection)
+        roads[2].spawnEnemy(roads[2].roadDirection)
+        roads[3].spawnEnemy(roads[3].roadDirection)
+        roads[4].spawnEnemy(roads[4].roadDirection)
+
+        seconds = 0;
+        
         isLevelOnePassed = true;
         console.log('ganaste el primer nivel');
     }
