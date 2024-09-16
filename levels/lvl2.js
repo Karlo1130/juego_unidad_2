@@ -1,6 +1,21 @@
 
 function drawLevel2() {
-    
+    //goal line
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < canvasWidth / 10; j++) {
+            
+            if ((j % 2 == 0 && i % 2 == 0) || (j % 2 == 1 && i % 2 == 1)){
+                ctx.fillStyle = 'white';
+                ctx.fillRect(j * 35, 0 + (35 * i), 35, 35)
+            } else {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(j * 35, 0 + (35 * i), 35, 35)
+            }
+        }
+    }
+
+    ctx.fillStyle = 'red';
+
     punpun.drawPlayer();
 
     roads.forEach(road => {
@@ -56,7 +71,7 @@ function updateLevel2(){
 
     });
 
-    if (punpun.yPosition <= 70) {
+    if (punpun.yPosition <= 35) {
 
         punpun.xPosition = (canvasWidth / 2) - (punpun.width / 2);
         punpun.yPosition = canvasHeight-punpun.height;

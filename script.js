@@ -42,24 +42,29 @@ function draw(){
     //ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight);
     
+    ctx.font = '35px Arial'
+    
     if(!isLevelOnePassed){
         drawLevel1();
+        ctx.fillText('NIVEL 1', 35, 30)
     }
     
     if (isLevelOnePassed && !isLevelTwoPassed){
         drawLevel2();
+        ctx.fillText('NIVEL 2', 35, 30)
     }
     
     if (isLevelTwoPassed && !isLevelThreePassed){
         drawLevel3();
+        ctx.fillText('NIVEL 3', 35, 30)
     }
     
     if (isLevelThreePassed){
         
+    } else {
+        ctx.fillText(seconds, 630, 30)
     }
 
-    ctx.font = '70px Arial'
-    ctx.fillText(seconds, 550, 70)
 
     update();
     requestAnimationFrame(draw);
