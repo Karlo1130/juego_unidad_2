@@ -49,6 +49,14 @@ function updateLevel1(){
                 //console.log('ta chocando');
             }
 
+            bullets.forEach(bullet => {
+                if(bullet.isColliding(enemy)){
+                    enemy.destroyEnemy();
+                    let carIndex = road.enemys.findIndex(car => car.isDestroyed == true);
+                    road.enemys.splice(carIndex, 1)
+                }
+            })
+
             if((enemy.xPosition <= -101 && enemy.direction == 'left') 
                 || (enemy.xPosition >= canvasWidth + 1 && enemy.direction == 'right')){
                 enemy.destroyEnemy();
@@ -86,6 +94,7 @@ function updateLevel1(){
         punpun.yPosition = canvasHeight-punpun.height;
         
         roads = []
+        bullets = []
 
         roads.push(new Road(1, 100, 'right'));
         roads.push(new Road(2, 200, 'left'));

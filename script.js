@@ -7,20 +7,32 @@ document.addEventListener("keydown", function(e){
         switch(e.key){
             case 'a':
                 punpun.direction = "left";
+                lastPlayerDirection = punpun.direction;
                 break;
             case 'w':
                 punpun.direction = "up";
+                lastPlayerDirection = punpun.direction;
                 break;
             case 'd':
                 punpun.direction = "right";
+                lastPlayerDirection = punpun.direction;
                 break;
             case 's':
                 punpun.direction = "down";
-                break;
-            case ' ':
-                isPaused = !isPaused;
+                lastPlayerDirection = punpun.direction;
                 break;
         }
+    }
+
+    switch(e.key){
+        case ' ':
+            console.log(lastPlayerDirection);
+            
+            bullets.push(new Bullet(punpun.xPosition + (punpun.width / 2), punpun.yPosition + (punpun.height / 2), lastPlayerDirection))
+            break;
+        case 'Escape':
+            isPaused = !isPaused;
+            break;
     }
 })
 
@@ -59,12 +71,15 @@ function draw(){
         ctx.fillText('NIVEL 3', 35, 30)
     }
     
+    bullets.forEach(bullet => {
+        bullet.drawBullet();
+    })
+
     if (isLevelThreePassed){
         
     } else {
         ctx.fillText(seconds, 630, 30)
     }
-
 
     update();
     requestAnimationFrame(draw);
@@ -117,6 +132,39 @@ function update(){
         
         if (isLevelTwoPassed && !isLevelThreePassed){
             updateLevel3();
+        }
+
+        bullets.forEach(bullet => {
+            bullet.moveBullet();
+            
+            if(bullet.xPosition < 0){
+                bullet.destroyBullet();
+                let bulletIndex = bullets.findIndex(bullet => bullet.isDestroyed == true);
+                bullets.splice(bulletIndex, 1)
+            }
+
+            if(bullet.yPosition < 0){
+                bullet.destroyBullet();
+                let bulletIndex = bullets.findIndex(bullet => bullet.isDestroyed == true);
+                bullets.splice(bulletIndex, 1)
+            }
+
+            if(bullet.xPosition > canvasWidth - bullet.width){
+                bullet.destroyBullet();
+                let bulletIndex = bullets.findIndex(bullet => bullet.isDestroyed == true);
+                bullets.splice(bulletIndex, 1)
+            } 
+
+            if(bullet.yPosition > canvasHeight - bullet.height){
+                bullet.destroyBullet();
+                let bulletIndex = bullets.findIndex(bullet => bullet.isDestroyed == true);
+                bullets.splice(bulletIndex, 1)
+            }
+
+        });
+
+        if (isLevelThreePassed){
+        
         }
 
     }

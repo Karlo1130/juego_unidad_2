@@ -37,6 +37,14 @@ function updateLevel3(){
                 //console.log('ta chocando');
             }
 
+            bullets.forEach(bullet => {
+                if(bullet.isColliding(enemy)){
+                    enemy.destroyEnemy();
+                    let carIndex = road.enemys.findIndex(car => car.isDestroyed == true);
+                    road.enemys.splice(carIndex, 1)
+                }
+            })
+
             if((enemy.xPosition <= -101 && enemy.direction == 'left') 
                 || (enemy.xPosition >= canvasWidth + 1 && enemy.direction == 'right')){
                 enemy.destroyEnemy();
@@ -55,6 +63,7 @@ function updateLevel3(){
         punpun.yPosition = canvasHeight-punpun.height;
 
         roads = [];
+        bullets = []
 
         isLevelThreePassed = true;
         console.log('ganaste el tercer nivel');
