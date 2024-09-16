@@ -4,20 +4,20 @@ class Road{
         this.number = number;
         this.yPosition = yPosition;
         this.roadDirection = roadDirection;
-        this.cars = [];
+        this.enemys = [];
     }
 
-    spawnCar(direction){
+    spawnEnemy(direction){
         if(direction == 'right'){
-            this.cars.push(new Car(-100, this.yPosition, 'right'))
+            this.enemys.push(new Enemy(-100, this.yPosition, 'right'))
         } else {
-            this.cars.push(new Car(canvasWidth, this.yPosition, 'left'))
+            this.enemys.push(new Enemy(canvasWidth, this.yPosition, 'left'))
         }
     }
 
-    drawCars(){
-        this.cars.forEach(car => {
-            car.drawCar();
+    drawEnemys(){
+        this.enemys.forEach(enemy => {
+            enemy.drawEnemy();
         });
     }
 }

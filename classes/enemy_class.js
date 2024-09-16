@@ -1,5 +1,5 @@
 //car object
-class Car {
+class Enemy {
     constructor(xPosition, yPosition, direction){
 
         this.direction = direction;
@@ -18,11 +18,11 @@ class Car {
         this.isDestroyed = false;
 
         this.sprite.onload = () => {
-            this.drawCar();
+            this.drawEnemy();
         };
     }
 
-    drawCar(){
+    drawEnemy(){
         if(this.direction == 'right'){
             ctx.drawImage(this.sprite, this.xPosition, this.yPosition, this.width, this.height);
         } else {
@@ -36,7 +36,7 @@ class Car {
         }
     }
 
-    moveCar(){
+    moveEnemy(){
         if(this.direction == 'right'){
             this.xPosition += this.xSpeed;
         } else {
@@ -44,7 +44,7 @@ class Car {
         }
     }
 
-    destroyCar(){
+    destroyEnemy(){
         this.isDestroyed = true;
     }
 }
