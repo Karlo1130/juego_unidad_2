@@ -34,7 +34,8 @@ function updateLevel3(){
             enemy.moveEnemy();
 
             if(punpun.isColliding(enemy)){
-                //console.log('ta chocando');
+                punpun.isDead = true;
+                bullets = [];
             }
 
             bullets.forEach(bullet => {
@@ -63,7 +64,9 @@ function updateLevel3(){
         punpun.yPosition = canvasHeight-punpun.height;
 
         roads = [];
-        bullets = []
+        bullets = [];
+
+        punpun.isDead = true;
 
         isLevelThreePassed = true;
         console.log('ganaste el tercer nivel');

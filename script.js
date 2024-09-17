@@ -2,38 +2,44 @@
 //keydown listener
 document.addEventListener("keydown", function(e){
 
-    if(punpun.direction == ''){
+    if(startGame && !punpun.isDead){
 
+        if(punpun.direction == ''){
+    
+            switch(e.key){
+                case 'a':
+                    punpun.direction = "left";
+                    lastPlayerDirection = punpun.direction;
+                    break;
+                case 'w':
+                    punpun.direction = "up";
+                    lastPlayerDirection = punpun.direction;
+                    break;
+                case 'd':
+                    punpun.direction = "right";
+                    lastPlayerDirection = punpun.direction;
+                    break;
+                case 's':
+                    punpun.direction = "down";
+                    lastPlayerDirection = punpun.direction;
+                    break;
+            }
+        }
+    
         switch(e.key){
-            case 'a':
-                punpun.direction = "left";
-                lastPlayerDirection = punpun.direction;
+            case ' ':
+                bullets.push(new Bullet(punpun.xPosition + (punpun.width / 2), punpun.yPosition + (punpun.height / 2), lastPlayerDirection))
                 break;
-            case 'w':
-                punpun.direction = "up";
-                lastPlayerDirection = punpun.direction;
-                break;
-            case 'd':
-                punpun.direction = "right";
-                lastPlayerDirection = punpun.direction;
-                break;
-            case 's':
-                punpun.direction = "down";
-                lastPlayerDirection = punpun.direction;
+            case 'Escape':
+                isPaused = !isPaused;
                 break;
         }
     }
 
-    switch(e.key){
-        case ' ':
-            console.log(lastPlayerDirection);
-            
-            bullets.push(new Bullet(punpun.xPosition + (punpun.width / 2), punpun.yPosition + (punpun.height / 2), lastPlayerDirection))
-            break;
-        case 'Escape':
-            isPaused = !isPaused;
-            break;
+    if (e.key == 'r'){
+        restartGame();
     }
+
 })
 
 //keyup listener (movement stop)
@@ -55,8 +61,8 @@ function draw(){
     ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight);
     
     ctx.font = '35px Arial'
-    
-    if(!isLevelOnePassed){
+
+    if(!isLevelOnePassed && startGame){
         drawLevel1();
         ctx.fillText('NIVEL 1', 35, 30)
     }
@@ -70,14 +76,28 @@ function draw(){
         drawLevel3();
         ctx.fillText('NIVEL 3', 35, 30)
     }
+
+    if(punpun.isDead && !isLevelThreePassed){
+        drawDeathScreen();
+    }
+
+    if(isLevelThreePassed){
+        drawWinScreen();
+    }
     
+    if(!startGame){
+        drawStartScreen();
+    }
+
     bullets.forEach(bullet => {
         bullet.drawBullet();
     })
 
     if (isLevelThreePassed){
         
-    } else {
+    } else if (startGame && !punpun.isDead){
+        ctx.fillStyle = 'red';
+        ctx.font = '35px Arial'
         ctx.fillText(seconds, 630, 30)
     }
 
@@ -87,6 +107,11 @@ function draw(){
 
 //update function
 function update(){
+
+    if(seconds == 3 && !startGame){
+        seconds = 0;
+        startGame = true;
+    }
 
     //is in pause
     if(!isPaused){

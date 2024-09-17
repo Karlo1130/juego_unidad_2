@@ -15,6 +15,8 @@ class Player {
         this.ySpeed = 7;
         this.xSpeed = 5;
 
+        this.isDead = false;
+
         this.sprite.onload = () => {
             this.drawPlayer();
         };

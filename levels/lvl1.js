@@ -46,7 +46,8 @@ function updateLevel1(){
             enemy.moveEnemy();
 
             if(punpun.isColliding(enemy)){
-                //console.log('ta chocando');
+                punpun.isDead = true;
+                bullets = [];
             }
 
             bullets.forEach(bullet => {

@@ -34,7 +34,8 @@ function updateLevel2(){
             enemy.moveEnemy();
 
             if(punpun.isColliding(enemy)){
-                //console.log('ta chocando');
+                punpun.isDead = true;
+                bullets = [];
             }
 
             bullets.forEach(bullet => {
@@ -85,7 +86,7 @@ function updateLevel2(){
         punpun.yPosition = canvasHeight-punpun.height;
 
         roads = [];
-        bullets = []
+        bullets = [];
 
         roads.push(new Road(1, 100, 'right'));
         roads.push(new Road(2, 200, 'left'));
