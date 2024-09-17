@@ -8,18 +8,22 @@ document.addEventListener("keydown", function(e){
     
             switch(e.key){
                 case 'a':
+                case 'A':
                     punpun.direction = "left";
                     lastPlayerDirection = punpun.direction;
                     break;
                 case 'w':
+                case 'W':
                     punpun.direction = "up";
                     lastPlayerDirection = punpun.direction;
                     break;
                 case 'd':
+                case 'D':
                     punpun.direction = "right";
                     lastPlayerDirection = punpun.direction;
                     break;
                 case 's':
+                case 'S':
                     punpun.direction = "down";
                     lastPlayerDirection = punpun.direction;
                     break;
@@ -36,7 +40,7 @@ document.addEventListener("keydown", function(e){
         }
     }
 
-    if (e.key == 'r'){
+    if (e.key == 'r' || e.key == 'R'){
         restartGame();
     }
 
@@ -48,9 +52,17 @@ document.addEventListener("keyup", function(e){
     if(punpun.direction == 'left' && e.key == 'a'
         || punpun.direction == 'up' && e.key == 'w'
         || punpun.direction == 'right' && e.key == 'd'
-        || punpun.direction == 'down' && e.key == 's')
-        punpun.direction = "";
-})
+        || punpun.direction == 'down' && e.key == 's'){
+            punpun.direction = "";
+        };
+
+    if(punpun.direction == 'left' && e.key == 'A'
+        || punpun.direction == 'up' && e.key == 'W'
+        || punpun.direction == 'right' && e.key == 'D'
+        || punpun.direction == 'down' && e.key == 'S'){
+            punpun.direction = "";
+        };
+});
 
 //recursive draw function
 function draw(){

@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 
 //background image
 const bgImage = new Image();
-bgImage.src = 'assets/bg/mono.jfif'
+bgImage.src = 'assets/bg/bg_image.png'
 
 //seconds variable
 var seconds = 0;
