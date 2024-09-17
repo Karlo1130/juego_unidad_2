@@ -16,12 +16,12 @@ function drawLevel3() {
 
     ctx.fillStyle = 'red';
     
-    punpun.drawPlayer();
-
     roads.forEach(road => {
+        road.drawRoad();
         road.drawEnemys();
     });
-  
+    
+    punpun.drawPlayer();
 }
 
 function updateLevel3(){
@@ -69,6 +69,5 @@ function updateLevel3(){
         punpun.isDead = true;
 
         isLevelThreePassed = true;
-        console.log('ganaste el tercer nivel');
     }
 }

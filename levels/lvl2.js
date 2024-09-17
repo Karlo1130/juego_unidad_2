@@ -16,12 +16,12 @@ function drawLevel2() {
 
     ctx.fillStyle = 'red';
 
-    punpun.drawPlayer();
-
     roads.forEach(road => {
+        road.drawRoad();
         road.drawEnemys();
     });
-  
+    
+    punpun.drawPlayer();
 }
 
 function updateLevel2(){
@@ -107,6 +107,5 @@ function updateLevel2(){
         seconds = 0;
 
         isLevelTwoPassed = true;
-        console.log('ganaste el segundo nivel');
     }
 }

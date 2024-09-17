@@ -27,12 +27,14 @@ function drawLevel1() {
     }
 
     ctx.fillStyle = 'red';
+    
+    roads.forEach(road => {
+        road.drawRoad();
+        road.drawEnemys();
+    });
 
     punpun.drawPlayer();
 
-    roads.forEach(road => {
-        road.drawEnemys();
-    });
   
 }
 
@@ -113,6 +115,5 @@ function updateLevel1(){
         seconds = 0;
         
         isLevelOnePassed = true;
-        console.log('ganaste el primer nivel');
     }
 }

@@ -5,6 +5,13 @@ class Road{
         this.yPosition = yPosition;
         this.roadDirection = roadDirection;
         this.enemys = [];
+
+        this.sprite = new Image();
+        this.sprite.src = 'assets/roads/road.png';
+
+        this.sprite.onload = () => {
+            this.drawRoad();
+        };
     }
 
     spawnEnemy(direction){
@@ -19,5 +26,9 @@ class Road{
         this.enemys.forEach(enemy => {
             enemy.drawEnemy();
         });
+    }
+
+    drawRoad(){
+        ctx.drawImage(this.sprite, 0, this.yPosition)
     }
 }
