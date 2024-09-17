@@ -48,6 +48,10 @@ function updateLevel1(){
             enemy.moveEnemy();
 
             if(punpun.isColliding(enemy)){
+                if(!punpun.isDead){
+                    deathSound.play();
+                }
+                bgMusic.pause();
                 punpun.isDead = true;
                 bullets = [];
             }

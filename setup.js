@@ -29,6 +29,23 @@ var bullets = [];
 
 var roads = [];
 
+const bgMusic = new Audio("sounds/bg_music.mp3")
+const deathSound = new Audio("sounds/death_sound.mp3")
+const winSound = new Audio("sounds/win_sound.mp3")
+const walkSound = new Audio("sounds/walk_sound.mp3")
+
+bgMusic.volume = 0.2;
+bgMusic.loop = true;
+bgMusic.controls = true;
+
+walkSound.loop = false;
+walkSound.controls = true;
+
+deathSound.loop = false;
+deathSound.volume = 0.1;
+
+winSound.loop = false;
+
 //create a new enemy in the same road when a car has beign destroy
 function newEnemyWhenDestroy(road){
     if(road.enemys.length == 0){
@@ -85,6 +102,18 @@ function getRandomInt(min, max){
 }
 
 function restartGame(){
+    bgMusic.currentTime = 0;
+    bgMusic.play();
+
+    walkSound.pause();
+    walkSound.currentTime = 0;
+
+    deathSound.pause();
+    deathSound.currentTime = 0;
+
+    winSound.pause();
+    winSound.currentTime = 0;
+
     startGame = false;
 
     isLevelOnePassed = false;

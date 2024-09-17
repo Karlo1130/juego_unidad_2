@@ -34,6 +34,10 @@ function updateLevel3(){
             enemy.moveEnemy();
 
             if(punpun.isColliding(enemy)){
+                if(!punpun.isDead){
+                    deathSound.play();
+                }
+                bgMusic.pause();
                 punpun.isDead = true;
                 bullets = [];
             }
@@ -60,6 +64,9 @@ function updateLevel3(){
     });
 
     if (punpun.yPosition <= 35) {
+        bgMusic.pause();
+        winSound.play();
+
         punpun.xPosition = (canvasWidth / 2) - (punpun.width / 2);
         punpun.yPosition = canvasHeight-punpun.height;
 

@@ -64,6 +64,10 @@ document.addEventListener("keyup", function(e){
         };
 });
 
+
+bgMusic.play();
+
+
 //recursive draw function
 function draw(){
 
@@ -157,6 +161,14 @@ function update(){
                 if(punpun.yPosition > canvasHeight - punpun.height)
                     punpun.yPosition -= punpun.ySpeed;
                 break;
+            default:
+                walkSound.pause();
+                walkSound.currentTime = 0;
+                break;
+        }
+
+        if(punpun.direction != ''){
+            walkSound.play();
         }
 
         if(!isLevelOnePassed){
